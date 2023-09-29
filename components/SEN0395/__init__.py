@@ -6,8 +6,8 @@ from esphome.const import CONF_ID
 
 DEPENDENCIES = ['uart']
 
-empty_uart_component_ns = cg.esphome_ns.namespace('empty_uart_component')
-EmptyUARTComponent = empty_uart_component_ns.class_('EmptyUARTComponent', cg.Component, uart.UARTDevice)
+SEN0395_distance_ns = cg.esphome_ns.namespace('SEN0395_distance')
+EmptyUARTComponent = SEN0395_distance_ns.class_('Sen0395Distance', cg.Component, uart.UARTDevice)
 
 CONFIG_SCHEMA = cv.Schema({
     cv.GenerateID(): cv.declare_id(EmptyUARTComponent)

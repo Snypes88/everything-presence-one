@@ -4,7 +4,7 @@
 #include "esphome/components/uart/uart.h"
 
 namespace esphome {
-namespace empty_uart_component {
+namespace SEN0395_distance {
 
 class EmptyUARTComponent : public uart::UARTDevice, public Component {
   public:
