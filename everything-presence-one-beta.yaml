@@ -204,25 +204,25 @@ sensor:
 
   - platform: template
     name: "Target 1 SNR" # Don't change
-    name: target_1_SNR
+    id: target_1_SNR
     # disabled_by_default: False
     internal: true
 
   - platform: template
     name: "Target 2 SNR" # Don't change
-    name: target_2_SNR
+    id: target_2_SNR
     # disabled_by_default: False
     internal: true
 
   - platform: template
     name: "Target 3 SNR" # Don't change
-    name: target_3_SNR
+    id: target_3_SNR
     # disabled_by_default: False
     internal: true
 
   - platform: template
     name: "Target 4 SNR" # Don't change
-    name: target_4_SNR
+    id: target_4_SNR
     # disabled_by_default: False
     internal: true
 
