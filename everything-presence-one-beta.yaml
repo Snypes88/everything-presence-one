@@ -1,15 +1,15 @@
 substitutions:
-  name: "everything-presence-beta"
-  friendly_name: "Everything Presence One"
-  project_name: "Everything Smart Technology.Everything Presence One"
+  # name: "everything-presence-beta"
+  # friendly_name: "Everything Presence One"
+  # project_name: "Everything Smart Technology.Everything Presence One"
   project_version: "1.3.0b"
-  temperature_offset: "-3"
-  humidity_offset: "5"
-  temperature_update_interval: "60s"
-  illuminance_update_interval: "30s"
-  pir_delay_off: "10s"
-  occupancy_delay_off: "15s"
-  hidden_ssid: "false"
+  # temperature_offset: "-3"
+  # humidity_offset: "5"
+  # temperature_update_interval: "60s"
+  # illuminance_update_interval: "30s"
+  # pir_delay_off: "10s"
+  # occupancy_delay_off: "15s"
+  # hidden_ssid: "false"
   # factory_reset_disabled: "true"
   # uart_target_output_disabled: "false"
   # uart_presence_output_disabled: "true"
@@ -38,10 +38,6 @@ wifi:
   ap: {}
 
 improv_serial:
-
-# dashboard_import:
-#   package_import_url: github://everythingsmarthome/everything-presence-one/everything-presence-one-beta.yaml@main
-#   import_full_config: false
 
 light:
   - platform: status_led
@@ -477,7 +473,7 @@ number:
 
 button:
   - platform: restart
-    name: Restart_ESP_${device_name}
+    name: Restart_ESP_${name}
     entity_category: diagnostic
     on_press:
       - uart.write:
@@ -485,7 +481,7 @@ button:
           data: "resetSystem 0"
 
   - platform: template
-    name: factory_reset_mmwMCU_${device_name}
+    name: factory_reset_mmwMCU_${name}
     id: factory_reset_mmwMCU
     entity_category: diagnostic
     on_press:
