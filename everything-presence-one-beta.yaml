@@ -13,6 +13,8 @@ substitutions:
   # factory_reset_disabled: "true"
   # uart_target_output_disabled: "false"
   # uart_presence_output_disabled: "true"
+  snr_bool: "true"
+  dist_bool: "true"
 
 esphome:
   name: ${name}
@@ -41,8 +43,8 @@ improv_serial:
 
 light:
   - platform: status_led
-    name: ESP32 status LED
-    pin: GPIO32
+    name: Status LED Main
+    pin: 32
     entity_category: config
     disabled_by_default: True
   # - platform: binary
@@ -106,7 +108,7 @@ binary_sensor:
     id: mmwave
     device_class: motion
     pin:
-      number: GPIO15
+      number: 15
       mode: INPUT_PULLDOWN
     on_state:
       - if:
@@ -177,57 +179,57 @@ sensor:
   - platform: template
     name: Target 1 Distance # Don't change
     id: target_distance_1_m
-    internal: true
-    # accuracy_decimals: 2
-    # disabled_by_default: False
+    # internal: ${dist_bool}
+    accuracy_decimals: 2
+    disabled_by_default: ${dist_bool}
   
   - platform: template
     name: Target 2 Distance # Don't change
     id: target_distance_2_m
-    internal: true
-    # accuracy_decimals: 2
-    # disabled_by_default: False
+    # internal: ${dist_bool}
+    accuracy_decimals: 2
+    disabled_by_default: ${dist_bool}
 
   - platform: template
     name: Target 3 Distance # Don't change
     id: target_distance_3_m
-    internal: true
-    # accuracy_decimals: 2
-    # disabled_by_default: False
+    # internal: ${dist_bool}
+    accuracy_decimals: 2
+    disabled_by_default: ${dist_bool}
 
   - platform: template
     name: Target 4 Distance # Don't change
     id: target_distance_4_m
-    internal: true
-    # accuracy_decimals: 2
-    # disabled_by_default: False
+    # internal: ${dist_bool}
+    accuracy_decimals: 2
+    disabled_by_default: ${dist_bool}
 
   - platform: template
     name: "Target 1 SNR" # Don't change
     id: target_1_SNR
-    # disabled_by_default: False
-    internal: true
+    disabled_by_default: ${snr_bool}
+    # internal: ${snr_bool}
 
   - platform: template
     name: "Target 2 SNR" # Don't change
     id: target_2_SNR
-    # disabled_by_default: False
-    internal: true
+    disabled_by_default: ${snr_bool}
+    # internal: ${snr_bool}
 
   - platform: template
     name: "Target 3 SNR" # Don't change
     id: target_3_SNR
-    # disabled_by_default: False
-    internal: true
+    disabled_by_default: ${snr_bool}
+    # internal: ${snr_bool}
 
   - platform: template
     name: "Target 4 SNR" # Don't change
     id: target_4_SNR
-    # disabled_by_default: False
-    internal: true
+    disabled_by_default: ${snr_bool}
+    # internal: ${snr_bool}
 
   - platform: template
-    name: num_targets
+    name: Targets
     id: num_targets # do not change
     accuracy_decimals: 0
 
@@ -240,18 +242,18 @@ sensor:
 
 switch:
   - platform: safe_mode
-    name: use_safe_mode
+    name: Safe Mode
 
   - platform: template
-    name: show_target_stats
+    name: Target Stats
     id: show_target_stats
     optimistic: true
-    internal: true
+    internal: false
     on_turn_off:
       - lambda: 'return clearTargets();'
 
   - platform: template
-    name: mmwave_sensor
+    name: mmWave Sensor
     id: mmwave_sensor # do not change
     entity_category: config
     optimistic: true
@@ -263,7 +265,7 @@ switch:
         - script.execute: turn_off_mmwave_sensor
 
   - platform: template
-    name: led
+    name: Status LED mmWave
     id: led  # do not change
     entity_category: config
     optimistic: true
@@ -312,7 +314,7 @@ switch:
 
 number:
   - platform: template
-    name: "Temperature Offset"
+    name: "Offset Temperature"
     id: temperature_offset_ui
     unit_of_measurement: "°C"
     min_value: -20
@@ -329,7 +331,7 @@ number:
       - lambda: 'id(shtc3_sensor).update();'
 
   - platform: template
-    name: "Humidity Offset"
+    name: "Offset Humidity"
     id: humidity_offset_ui
     unit_of_measurement: "%"
     min_value: -50
@@ -346,7 +348,7 @@ number:
       - lambda: 'id(shtc3_sensor).update();'
 
   - platform: template
-    name: "Illuminance Offset"
+    name: "Offset Illuminance"
     id: illuminance_offset_ui
     unit_of_measurement: "lx"
     min_value: -50
@@ -363,8 +365,9 @@ number:
       - lambda: 'id(illuminance_sensor).update();'
 
   - platform: template
-    name: distance
+    name: Detection Distance
     id: distance # do not change
+    icon: "mdi:arrow-left-right"
     entity_category: config
     min_value: 0.15
     max_value: 9.45
@@ -400,11 +403,12 @@ number:
               - script.execute: set_distance 
       
   - platform: template
-    name: latency
+    name: Latency
     id: latency # do not change
+    icon: mdi:clock-end
     entity_category: config
     min_value: 1
-    max_value: 600
+    max_value: 30
     lambda: |-
       leapmmw(id(uart_bus)).getmmwConf("getLatency");
       return {};
@@ -437,8 +441,9 @@ number:
               - script.execute: set_latency
 
   - platform: template
-    name: sensitivity
+    name: Sensitivity
     id: sensitivity # do not change
+    icon: mdi:target-variant
     entity_category: config
     min_value: 0
     max_value: 9
@@ -473,7 +478,7 @@ number:
 
 button:
   - platform: restart
-    name: Restart_ESP_${name}
+    name: Restart ESP ${friendly_name}
     entity_category: diagnostic
     on_press:
       - uart.write:
@@ -481,7 +486,7 @@ button:
           data: "resetSystem 0"
 
   - platform: template
-    name: factory_reset_mmwMCU_${name}
+    name: Factory Reset mmWMCU ${friendly_name}
     id: factory_reset_mmwMCU
     entity_category: diagnostic
     on_press:
